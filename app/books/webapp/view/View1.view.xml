@@ -1,0 +1,126 @@
+
+                <!-- <content>
+           <VBox id="vbox" class="sapUiSmallMargin">
+            	<f:SimpleForm id="SimpleFormChange354"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title="iXBRL Generation"
+			labelSpanXL="3"
+			labelSpanL="3"
+			labelSpanM="3"
+			labelSpanS="12"
+			adjustLabelSpan="false"
+			emptySpanXL="4"
+			emptySpanL="4"
+			emptySpanM="4"
+			emptySpanS="0"
+			columnsXL="1"
+			columnsL="1"
+			columnsM="1"
+			singleContainerFullSize="false" >
+			<f:content>
+            	<Label id="fiscalyear" text="Fiscal Year" />
+                <ComboBox  id="onyearselection" selectionChange="onYearSelection" width="100px">     
+                <core:Item id="2020" key="2020" text="2020"/>
+                <core:Item id="2021" key="2021" text="2021"/>
+                <core:Item id="2022" key="2022" text="2022"/>                  
+                </ComboBox>
+                
+                <VBox id="V1">
+                  <CheckBox id="generateiXbrlViewer" text="Generate iXBRL viewer"  select="ongenerateXBRLViewer" />
+                </VBox>
+                <Label id="countrycode" text="Country Code" />
+                <ComboBox id="onCountrySelection" selectionChange="onCountrySelection" width="100px">
+                <core:Item id="01" key="US" text="US"/>
+                <core:Item id="02" key="India"  text="India"/>
+                <core:Item id="03"  key="Singapore" text="Singapore"/>
+                <core:Item id="04"  key="ALL" text="ALL"/>
+                </ComboBox>
+                <VBox id="V2" >
+                   <CheckBox id="generateXbrlFile" text="Generate XBRL file" select="ongenerateXBRLFile"  />
+                 </VBox>
+                <Label id="companyid" text="Company ID" />
+                <ComboBox id="onCompanySelection" selectionChange="onCompanySelection" width="100px">
+                <core:Item id="1" key="1" text="1 Sunshine pvt ltd" />
+                <core:Item id="126" key="126" text="CompanyCode: 126" />
+                </ComboBox>
+                <Label id="reporttype" text="Report Type" />
+                <ComboBox id="onreportselection" selectionChange="onReportSelection" width="100px">
+                <core:Item id="ESRSXBRL" key="ESRSXBRL" text="ESRSXBRL" />
+                <core:Item id="CBCREV01" key="CBCREV01" text="CBCREV01" />
+                <core:Item id="CBCREV02" key="CBCREV02" text="CBCREV02" />
+                </ComboBox>
+                <VBox id="vbox1">
+                <Button id="generate" text="Generate" type="Emphasized" press="onXBRLGeneratePress"/>
+                </VBox>
+            </f:content>
+            </f:SimpleForm>
+            </VBox>
+        </content> -->
+        <mvc:View controllerName="books.books.controller.View1"
+xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m" 	xmlns:l="sap.ui.layout"
+	xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <Table
+                id="booksTable"
+                items="{
+                    path: '/Books',
+                    parameters: {
+                        $$updateGroupId: 'booksGroup'
+                    }
+                }"
+                 mode="SingleSelectMaster">
+                <headerToolbar>
+                    <Toolbar>
+                        <Title text="Books"/>
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://add" press=".onOpenAddDialog" tooltip="Add Book"/>
+                        <Button icon="sap-icon://edit" press=".onOpenEditDialog" tooltip="Edit Book" enabled="{= ${booksTable>/selectedIndex} >= 0}"/>
+                        <Button icon="sap-icon://delete" press=".onDeleteBook" tooltip="Delete Book" enabled="{= ${booksTable>/selectedIndex} >= 0}"/>
+                        <Button icon="sap-icon://refresh" press=".onRefresh" tooltip="Refresh Books List"/>
+                    </Toolbar>
+                </headerToolbar>
+                <columns>
+                   <Column>
+    <Text text="ID" tooltip="Book ID"/>
+</Column>
+<Column>
+    <Text text="Title" tooltip="Book Title"/>
+</Column>
+<Column>
+    <Text text="Stock" tooltip="Available Stock"/>
+</Column>
+<Column>
+                        <Text text="Price" tooltip="Book Price"/>
+                    </Column>
+                    <Column>
+                        <Text text="Total Value" tooltip="Stock * Price"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <Text text="{ID}" />
+                            <Text text="{title}" />
+                            <Text text="{stock}" />
+                            <Text text="{
+                                path: 'price',
+                                type: 'sap.ui.model.type.Currency',
+                                formatOptions: {
+                                    showMeasure: false
+                                }
+                            }" />
+                            <Text text="{
+                                parts: ['stock', 'price'],
+                                formatter: '.formatter.calculateTotalValue'
+                            }" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+            <Text text="Grand Total: {viewModel>/grandTotal}" />
+        </content>
+    </Page>
+</mvc:View>
